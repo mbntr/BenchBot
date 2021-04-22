@@ -1,9 +1,9 @@
 import discord
 import asyncio
 
-from scraper import multicoreGB5
-from scraper import singlecoreGB5
-import scraper
+from gb5scraper import multicoreGB5
+from gb5scraper import singlecoreGB5
+import gb5scraper
 
 # Opens the file containing the token and reads the first line
 TOKEN = open("TOKEN.txt", "r").readline()
@@ -89,7 +89,7 @@ async def on_message(message):
 @client.event
 async def on_ready():
     print("BenchBot 1.1")
-    asyncio.create_task(scraper.main())
+    asyncio.create_task(gb5scraper.main())
     print("Ready")
 
 
