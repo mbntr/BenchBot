@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 import asyncio
+import datetime
+
 
 multicoreGB5 = {}
 singlecoreGB5 = {}
@@ -39,5 +41,6 @@ async def main():
 
         await GatherData(CPUs1, multiresults, multicoreGB5)
         await GatherData(CPUs2, singleresults, singlecoreGB5)
+        print(f'Geekbench, updated {datetime.datetime.now().strftime("%B %d, %Y --- %X %Z")}', end='')
 
-        await asyncio.sleep(3600)
+        await asyncio.sleep(3600*24)
