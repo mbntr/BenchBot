@@ -4,14 +4,42 @@ import asyncio
 from gb5scraper import multicoreGB5
 from gb5scraper import singlecoreGB5
 import gb5scraper
+import platform
+import subprocess
 
 # Opens the file containing the token and reads the first line
 TOKEN = open("TOKEN.txt", "r").readline()
 
 client = discord.Client()
+OS = platform.system()
+
+
+def BotInfo():
+    return "```BenchBot 1.2, developed by Monabuntur, April 2021\n" \
+           "Github: https://github.com/monabuntur/BenchBot```"
+
+
+def BotSpecs():
+    if OS == 'Linux':
+        return f'```OS: {OS} {platform.release()}\n' \
+               'CPU: %s' \
+               f'Total RAM installed: {subprocess.check_output("echo $(($(getconf _PHYS_PAGES) * $(getconf PAGE_SIZE) / (1073741824)))", shell=True).strip().decode()}' % (str(subprocess.check_output("cat /proc/cpuinfo | grep 'model name' | uniq", shell=True).strip().decode())[13:])
+
+    elif OS == 'Windows':
+        return f'```OS: {OS} {platform.release()}, Build {platform.version()}\n' \
+               f"CPU: {str(subprocess.check_output('wmic cpu get name /format:list').strip().decode()[5:])}\n" \
+               f"Total RAM installed: {round(float(subprocess.check_output('wmic OS get TotalVisibleMemorySize /Value').strip().decode()[23:]) / 1048576, 1)} GB\n```"
+
+    elif OS == "Darwin":
+        return "```Too cool for macOS```"
+
+    else:
+        return "```Unsupported action, this likely means that the bot is running on an OS that is neither Windows nor " \
+               "Linux``` "
 
 
 # Compares two CPUs
+
 
 def Faster(dictionary, CPU1, CPU2):
     if int(dictionary.get(CPU1)) > int(dictionary.get(CPU2)):
@@ -37,7 +65,9 @@ def helpcom():
            "|gbsingle *CPU* = single core Geekbench 5\n" \
            "|gbmulti *CPU* = multi core Geekbench 5\n" \
            "|gbcomparesingle *CPU1* *CPU2* = compares two CPUs in single core Geekbench 5\n" \
-           "|gbcomparemulti *CPU1* *CPU2* = compares two CPUs in multi core Geekbench 5" \
+           "|gbcomparemulti *CPU1* *CPU2* = compares two CPUs in multi core Geekbench 5\n" \
+           "|bpecs = Specs of the system the bot is running on\n" \
+           "|botinfo = pretty self explanatory" \
            "```"
 
 
@@ -85,12 +115,17 @@ async def on_message(message):
         except IndexError or TypeError:
             await message.channel.send("```Please try again with a valid CPU```")
 
+    elif message.content.startswith("|bpecs"):
+        await message.channel.send(BotSpecs())
+
+    elif message.content.startswith("|botinfo"):
+        await message.channel.send(BotInfo())
+
 
 @client.event
 async def on_ready():
-    print("BenchBot 1.1")
+    print("BenchBot 1.2")
     asyncio.create_task(gb5scraper.main())
-    print("Ready")
 
 
 client.run(TOKEN)
