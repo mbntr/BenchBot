@@ -124,7 +124,7 @@ async def on_message(message):
 
 @client.event
 async def on_ready():
-    print("BenchBot 1.2")
+    print("BenchBot 1.3")
     asyncio.create_task(gb5scraper.main())
 
 
