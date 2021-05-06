@@ -84,7 +84,7 @@ async def on_message(message):
     if message.content.startswith("|help"):
         await message.channel.send(helpcom())
 
-    elif message.content.startswith("|gbcomparesingle"):
+    if message.content.startswith("|gbcomparesingle"):
         try:
             await message.channel.send(CompareCPU(singlecoreGB5, message.content.split()[1].capitalize(),
                                                   message.content.split()[2].capitalize()))
@@ -92,7 +92,7 @@ async def on_message(message):
         except IndexError:
             await message.channel.send("```Please try again with valid CPUs```")
 
-    elif message.content.startswith("|gbcomparemulti"):
+    if message.content.startswith("|gbcomparemulti"):
         try:
             await message.channel.send(
                 CompareCPU(multicoreGB5, message.content.split()[1].capitalize(),
@@ -101,24 +101,24 @@ async def on_message(message):
         except IndexError:
             await message.channel.send("```Please try again with valid CPUs```")
 
-    elif message.content.startswith("|gbmulti"):
+    if message.content.startswith("|gbmulti"):
         try:
             await message.channel.send(Geekbenchmulticore(message.content.split()[1].capitalize()))
 
         except IndexError or TypeError:
             await message.channel.send("```Please try again with a valid CPU```")
 
-    elif message.content.startswith("|gbsingle"):
+    if message.content.startswith("|gbsingle"):
         try:
             await message.channel.send(Geekbenchsinglecore(message.content.split()[1].capitalize()))
 
         except IndexError or TypeError:
             await message.channel.send("```Please try again with a valid CPU```")
 
-    elif message.content.startswith("|bpecs"):
+    if message.content.startswith("|bpecs"):
         await message.channel.send(BotSpecs())
 
-    elif message.content.startswith("|botinfo"):
+    if message.content.startswith("|botinfo"):
         await message.channel.send(BotInfo())
 
 
